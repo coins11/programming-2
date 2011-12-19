@@ -1,0 +1,11 @@
+
+CFLAGS = -g -Wall
+PREFIX =
+
+report.pdf : report.ps
+	ps2pdf report.ps
+
+ProgReport($(PREFIX), 1 2 3, 1)
+
+.DEFAULT : report.pdf
+

@@ -1,0 +1,28 @@
+
+open build/Common
+open build/C
+open build/LaTeX
+
+DefineCommandVars()
+
+ProgReport(p, l, exnum) =
+	foreach(c, $l)
+		n = $p$c
+		CProgram($n, $n)
+		$n.tex : $n $n.input $(ROOT)/scripts/Generator.hs
+			echo "\\section{課題$c}" > $n.tex
+			runhaskell $(ROOT)/scripts/Generator.hs $n >> $n.tex
+	body.tex : $(addprefix $p, $(addsuffix .tex, $l))
+		cat $(addprefix $p, $(addsuffix .tex, $l)) > body.tex
+	variables.tex :
+		echo "\\newcommand{\exnum}[0]{$(exnum)}" > variables.tex
+	report.tex : $(ROOT)/templates/report.tex
+		cp $(ROOT)/templates/report.tex report.tex
+	LATEX = platex --interaction=nonstopmode --kanji=utf8
+	DVIPDFM = dvipdfmx
+	DVIPDFMFLAGS = -z 9
+	TEXDEPS = body.tex variables.tex
+	LaTeXDocument(report, report)
+
+.SUBDIRS: . 2011-12-12 2011-12-19
+
