@@ -12,4 +12,6 @@ else
     digit=$2
 fi
 
-cat /dev/urandom | tr -cd $charset | head -c $digit
+result=`cat /dev/urandom 2>/dev/null | tr -cd $charset 2>/dev/null | head -c $digit 2>/dev/null`
+
+echo $result

@@ -33,8 +33,10 @@ Problem(name, title, tests) =
             cat $(addsuffix .tex, $(tests))
             close($(stdout))
 
-Test(prog, name, args, deps) =
-    $(name).tex : $(prog) $(name) $(deps)
+Test(prog, name, args, inputs, outputs) =
+    $(name).output $(outputs) : $(prog) $(name) $(inputs)
+        ./$(prog) $(args) < $(name) > $(name).output
+    $(name).tex : $(name).output $(outputs)
         section:
             stdout = $(fopen $(name).tex, w)
             echo "\\subsection{実行例}"
@@ -47,15 +49,20 @@ Test(prog, name, args, deps) =
             echo "\\begin{lstlisting}[style=plain]"
             cat $(name)
             echo "\\end{lstlisting}"
-            foreach(d, $(deps)):
-                echo "\\subsection{$(d)}"
+            foreach(i, $(inputs)):
+                echo "\\subsection{$(i) [input]}"
                 echo "\\begin{lstlisting}[style=plain]"
-                cat $(d)
+                cat $(i)
                 echo "\\end{lstlisting}"
             echo "\\subsubsection{標準出力}"
             echo "\\begin{lstlisting}[style=plain]"
-            cat $(name) | ./$(prog) $(args)
+            cat $(name).output
             echo "\\end{lstlisting}"
+            foreach(o, $(outputs)):
+                echo "\\subsection{$(o) [output]}"
+                echo "\\begin{lstlisting}[style=plain]"
+                cat $(o)
+                echo "\\end{lstlisting}"
             close($(stdout))
 
 Random(charset, digit) =
