@@ -5,24 +5,71 @@ open build/LaTeX
 
 DefineCommandVars()
 
-ProgReport(p, l, exnum) =
-	foreach(c, $l)
-		n = $p$c
-		CProgram($n, $n)
-		$n.tex : $n $n.input $(ROOT)/scripts/Generator.hs
-			echo "\\section{課題$c}" > $n.tex
-			runhaskell $(ROOT)/scripts/Generator.hs $n >> $n.tex
-	body.tex : $(addprefix $p, $(addsuffix .tex, $l))
-		cat $(addprefix $p, $(addsuffix .tex, $l)) > body.tex
-	variables.tex :
-		echo "\\newcommand{\exnum}[0]{$(exnum)}" > variables.tex
-	report.tex : $(ROOT)/templates/report.tex
-		cp $(ROOT)/templates/report.tex report.tex
-	LATEX = platex --interaction=nonstopmode --kanji=utf8
-	DVIPDFM = dvipdfmx
-	DVIPDFMFLAGS = -z 9
-	TEXDEPS = body.tex variables.tex
-	LaTeXDocument(report, report)
+EMPTY =
+
+Report(problems, rnum) =
+    variables.tex :
+        echo "\\newcommand{\rnum}[0]{$(rnum)}" > variables.tex
+    body.tex : $(addsuffix .tex, $(problems))
+        cat $(addsuffix .tex, $(problems)) > body.tex
+    report.tex : $(ROOT)/templates/report.tex
+        cp $(ROOT)/templates/report.tex report.tex
+    LATEX = platex --interaction=nonstopmode --kanji=utf8
+    DVIPDFM = dvipdfmx
+    DVIPDFMFLAGS = -z 9
+    TEXDEPS = body.tex variables.tex
+    LaTeXDocument(report, report)
+
+Problem(name, title, tests) =
+    CProgram($(name), $(name))
+    $(name).tex : $(name) $(addsuffix .tex, $(tests))
+        section:
+            stdout = $(fopen $(name).tex, w)
+            echo "\\section{$(title)}"
+            echo "\\subsection{ソースコード}"
+            echo "\\begin{lstlisting}[style=program, language=C]"
+            cat $(name).c
+            echo "\\end{lstlisting}"
+            cat $(addsuffix .tex, $(tests))
+            close($(stdout))
+
+Test(prog, name, args, deps) =
+    $(name).tex : $(prog) $(name) $(deps)
+        section:
+            stdout = $(fopen $(name).tex, w)
+            echo "\\subsection{実行例}"
+            if $(not $(equal $(args), $(EMPTY)))
+                echo "\\subsubsection{引数列}"
+                echo "\\begin{lstlisting}[style=plain]"
+                echo $(args)
+                echo "\\end{lstlisting}"
+            echo "\\subsubsection{標準入力}"
+            echo "\\begin{lstlisting}[style=plain]"
+            cat $(name)
+            echo "\\end{lstlisting}"
+            foreach(d, $(deps)):
+                echo "\\subsection{$(d)}"
+                echo "\\begin{lstlisting}[style=plain]"
+                cat $(d)
+                echo "\\end{lstlisting}"
+            echo "\\subsubsection{標準出力}"
+            echo "\\begin{lstlisting}[style=plain]"
+            cat $(name) | ./$(prog) $(args)
+            echo "\\end{lstlisting}"
+            close($(stdout))
+
+Random(charset, digit) =
+    $(ROOT)/scripts/random $(charset) $(digit)
+
+Interval(n, m) =
+    if $(le $(n), $(m))
+        value $(n) $(Interval $(add 1, $(n)), $(m))
+
+Pow(n, m) =
+    if $(eq 0, $(m))
+        value 1
+    else
+        value $(mul $(n), $(Pow $(n), $(sub $(m), 1)))
 
 .SUBDIRS: . 2011-12-12 2011-12-19
 

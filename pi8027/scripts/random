@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+if [ -z $1 ]; then
+    charset="[:digit:]"
+else
+    charset=$1
+fi
+
+if [ -z $2 ]; then
+    digit=10
+else
+    digit=$2
+fi
+
+cat /dev/urandom | tr -cd $charset | head -c $digit
