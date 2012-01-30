@@ -6,12 +6,12 @@ report.pdf : report.ps
 
 Report(1 2 3, 1)
 
-Problem(1, 課題1, 1_1)
-Test(1, 1_1, $(EMPTY), $(EMPTY), $(EMPTY))
+Problem(1, 課題1, 1-1)
+Test(1, 1-1, $(EMPTY), $(EMPTY), $(EMPTY))
 
-Problem(2, 課題2, $(addprefix 2_, $(Interval 1, 10)))
-Test(2, 2_1, $(EMPTY), $(EMPTY), $(EMPTY))
-foreach(n, $(addprefix 2_, $(Interval 2, 10))):
+Problem(2, 課題2, $(addprefix 2-, $(Interval 1, 10)))
+Test(2, 2-1, $(EMPTY), $(EMPTY), $(EMPTY))
+foreach(n, $(addprefix 2-, $(Interval 2, 10))):
 	Test(2, $(n), $(EMPTY), $(EMPTY), $(EMPTY))
 	$(n):
 		section:
@@ -20,10 +20,10 @@ foreach(n, $(addprefix 2_, $(Interval 2, 10))):
 			echo $(Random [:alpha:], 40)
 			close($(stdout))
 
-Problem(3, 課題3, $(addprefix 3_, $(Interval 1, 10)))
-Test(3, 3_1, $(EMPTY), $(EMPTY), $(EMPTY))
-Test(3, 3_2, $(EMPTY), $(EMPTY), $(EMPTY))
-foreach(n, $(addprefix 3_, $(Interval 3, 10))):
+Problem(3, 課題3, $(addprefix 3-, $(Interval 1, 10)))
+Test(3, 3-1, $(EMPTY), $(EMPTY), $(EMPTY))
+Test(3, 3-2, $(EMPTY), $(EMPTY), $(EMPTY))
+foreach(n, $(addprefix 3-, $(Interval 3, 10))):
 	Test(3, $(n), $(EMPTY), $(EMPTY), $(EMPTY))
 	$(n):
 		section:

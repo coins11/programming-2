@@ -5,7 +5,7 @@ int main(void)
 {
     size_t n, i;
     double **matrix;
-    scanf("%d", &n);
+    scanf("%d", (int *)&n);
     matrix = malloc(sizeof(double *) * n);
     if(!matrix){
         return 0;

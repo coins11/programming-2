@@ -1,0 +1,29 @@
+
+CFLAGS = -g -Wall
+
+report.pdf : report.ps
+	ps2pdf report.ps
+
+Report(1 2 3, 1)
+
+Problem(1, 課題1, $(addprefix 1-, $(Interval 1, 50)))
+foreach(n, $(addprefix 1-, $(Interval 1, 50))):
+	Test(1, $(n), $(n).input, $(n).input, $(EMPTY))
+	$(n):
+		echo > $(n)
+	$(n).input:
+		$(Random [:alnum:], $(add 500, $(mod $(random), 501))) | fold > $(n).input
+
+Problem(2, 課題2, $(addprefix 2-, $(Interval 1, 50)))
+foreach(n, $(addprefix 2-, $(Interval 1, 50))):
+	Test(2, $(n), $(n).input $(n).output, $(n).input, $(n).output)
+	$(n):
+		echo > $(n)
+	$(n).input:
+		$(Random [:alnum:], $(add 500, $(mod $(random), 501))) | fold > $(n).input
+
+Problem(3, 課題3, 3-1)
+Test(3, 3-1, 3-1.input, 3-1.input, $(EMPTY))
+
+.DEFAULT : report.pdf
+
