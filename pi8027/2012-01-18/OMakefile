@@ -4,7 +4,7 @@ CFLAGS = -g -Wall
 report.pdf : report.ps
 	ps2pdf report.ps
 
-Report(1 2 3, 1)
+Report(1 2 3, 3)
 
 Problem(1, 課題1, $(addprefix 1-, $(Interval 1, 50)))
 foreach(n, $(addprefix 1-, $(Interval 1, 50))):
