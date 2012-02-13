@@ -69,6 +69,9 @@ int read_word(FILE *fp, char *word)
 void add_word(char *word)
 {
   struct record *p = NULL,  *q = NULL, *new = NULL;
+
+  if (word[0] == '\0') return;
+    
   for (p = head; p != NULL; p = p->next)
   {
     if (strcmp(word, p->word) == 0)
