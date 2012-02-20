@@ -1,0 +1,28 @@
+
+CFLAGS = -g -Wall
+
+report.pdf : report.ps
+	ps2pdf report.ps
+
+Report(1 2 3, 1)
+
+Problem(1, 課題1, $(addprefix 1-, $(Interval 1, 10)))
+foreach(n, $(addprefix 1-, $(Interval 1, 10))):
+	Test(1, $(n), $(EMPTY), $(EMPTY), $(EMPTY))
+	$(n):
+		echo $(add 1, $(mod $(random), 20)) > $(n)
+
+Problem(2, 課題2, $(addprefix 2-, $(Interval 1, 10)))
+foreach(n, $(addprefix 2-, $(Interval 1, 10))):
+	Test(2, $(n), $(EMPTY), $(EMPTY), $(EMPTY))
+	$(n):
+		echo $(add 1, $(mod $(random), $(Pow 2, $(add 1, $(mod $(random), 30))))) > $(n)
+
+Problem(3, 課題3, $(addprefix 3-, $(Interval 1, 10)))
+foreach(n, $(addprefix 3-, $(Interval 1, 10))):
+	Test(3, $(n), $(EMPTY), $(EMPTY), $(EMPTY))
+	$(n):
+		echo $(add 1, $(mod $(random), 1000000000)) > $(n)
+
+.DEFAULT : report.pdf
+
