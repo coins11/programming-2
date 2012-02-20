@@ -1,0 +1,28 @@
+#INCLUDE <STDIO.H>
+
+INT MAIN(INT ARGC, CHAR *ARGV[])
+{
+	INT COUNT;
+	FILE *FP;
+
+	IF (ARGC != 2) {
+		PRINTF("MISSING FILE ARGUMENT\N");
+		RETURN 1;
+	}
+
+	IF ((FP = FOPEN(ARGV[1], "R")) == NULL) {
+		PRINTF("CAN'T OPEN %S\N", ARGV[1]);
+		RETURN 1;
+	}
+
+	COUNT = 0;
+	WHILE (FGETC(FP) != EOF) {
+		COUNT++;
+	}
+
+	PRINTF("%D LETTERS\N", COUNT);
+	FCLOSE(FP);
+
+	RETURN 0;
+}
+

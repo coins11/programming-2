@@ -1,0 +1,211 @@
+\documentclass[11pt,a4paper,a4j]{jsarticle}
+\usepackage{okumacro, fancybox, ascmac}
+
+\title{プログラミング入門II 演習報告書}
+\author{吉村　優（201111411）\\
+mail:yoshimura\_yuu@coins.tsukuba.ac.jp}
+
+\begin{document}
+\maketitle
+
+\part*{演習3}
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{verbatim}
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    int count;
+    FILE *fp;
+
+    if (argc != 2) {
+        printf("missing file argument\n");
+        return 1;
+    }
+
+    if ((fp = fopen(argv[1], "r")) == NULL) {
+        printf("can't open %s\n", argv[1]);
+        return 1;
+    }
+
+    count = 0;
+    while (fgetc(fp) != EOF) {
+        count++;
+    }
+
+    printf("%d letters\n", count);
+    fclose(fp);
+
+    return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./1 1.c
+362 letters
+\end{verbatim}
+\end{shadebox}
+
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{verbatim}
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    int ch;
+    FILE *sfp, *dfp;
+
+    if (argc != 3) {
+        printf("missing file argument\n");
+        return 1;
+    }
+
+    if ((sfp = fopen(argv[1], "r")) == NULL) {
+        printf("can't open %s\n", argv[1]);
+        return 1;
+    }
+
+    if ((dfp = fopen(argv[2], "w")) == NULL) {
+        printf("can't open %s\n", argv[2]);
+        fclose(sfp);
+        return 1;
+    }
+
+    while ((ch = fgetc(sfp)) != EOF) {
+        if (97 <= ch && ch <= 122) { 
+            fputc(ch-32, dfp);
+        } else {
+            fputc(ch, dfp);
+        }
+    }
+
+    fclose(dfp);
+    fclose(sfp);
+
+    return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+[11] [~/tmp/pro2/3]
+yoshimura_yuu $ ./2 1.c copy.txt
+
+------------ copy.txt -------------
+#INCLUDE <STDIO.H>
+
+INT MAIN(INT ARGC, CHAR *ARGV[])
+{
+    INT COUNT;
+    FILE *FP;
+
+    IF (ARGC != 2) {
+        PRINTF("MISSING FILE ARGUMENT\N");
+        RETURN 1;
+    }
+
+    IF ((FP = FOPEN(ARGV[1], "R")) == NULL) {
+        PRINTF("CAN'T OPEN %S\N", ARGV[1]);
+        RETURN 1;
+    }
+
+    COUNT = 0;
+    WHILE (FGETC(FP) != EOF) {
+        COUNT++;
+    }
+
+    PRINTF("%D LETTERS\N", COUNT);
+    FCLOSE(FP);
+
+    RETURN 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+\section{}
+\subsection{ソース}
+\begin{verbatim}
+#include <stdio.h>
+
+struct person {
+    char name[256];
+    int  score;
+};
+
+int main(int argc, char *argv[]) {
+    int n, i, j;
+    FILE *fp;
+    struct person p[128];
+    struct person tmp;
+
+    if (argc != 2) {
+        printf("missing file argument\n");
+        return 1;
+    }
+
+    if ((fp = fopen(argv[1], "r")) == NULL) {
+        printf("can't open %s\n", argv[1]);
+        return 1;
+    }
+
+
+    for (i=0; fscanf(fp, "%s\t\t%d", p[i].name, &p[i].score) != EOF; i++)
+    
+    n = i;
+    
+    fclose(fp);
+
+    for (i=0; i<n; i++) {
+        for (j=n; j>i; j--) {
+            if (p[j-1].score > p[j].score) {
+                tmp    = p[j];
+                p[j]   = p[j-1];
+                p[j-1] = tmp;
+            }
+        }
+    }
+    
+    for (i=0; i<n; i++) {
+        printf("%s\t%d\n", p[i].name, p[i].score);
+    }    
+
+    return 0;
+}
+\end{verbatim}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./3 prog2-ex3-data.txt
+Kojima  10
+Kuno    10
+Miura   12
+Ojima   30
+Yamada  33
+Nagai   35
+Kudou   40
+Kawasaki        40
+Kameda  44
+Sato    50
+Takahasi        60
+Suzuki  60
+Suda    65
+Hayashi 66
+Kato    70
+Matumoto        70
+Akiyama 80
+Kimura  85
+Nakamura        95
+\end{verbatim}
+\end{shadebox}
+
+\end{document}

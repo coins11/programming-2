@@ -1,0 +1,231 @@
+\documentclass[11pt,a4paper,a4j]{jsarticle}
+\usepackage{okumacro, fancybox, ascmac}
+
+\title{プログラミング入門II 演習報告書}
+\author{吉村　優（201111411）\\
+mail:yoshimura\_yuu@coins.tsukuba.ac.jp}
+
+\begin{document}
+\maketitle
+
+\part*{演習4}
+\section{}
+\subsection{ソース}
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct record {
+    int no;
+    char name[10];
+    int point;
+    struct record *next;
+};
+
+void insert_list(int no, char *name, int x);
+
+struct record *head = NULL;
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    int no, x;
+    char name[10], buf[256];
+    struct record *p;
+
+    if (argc != 2) {
+        printf("missing file argument\n");
+        return 1;
+    }
+
+    fp = fopen(argv[1], "r");
+    if (fp == NULL) {
+        printf("can't open %s\n", argv[1]);
+        return 1;
+    }
+
+    while (fgets(buf, sizeof(buf), fp) != NULL) {
+        sscanf(buf, "%d %s %d", &no, name, &x);
+        insert_list(no, name, x);
+    }
+
+    fclose(fp);
+
+    for (p = head; p != NULL; p = p->next) {
+        printf("%d %s %d\n", p->no, p->name, p->point);
+    }
+
+    return 0;
+}
+
+void insert_list(int no, char *name, int x)
+{
+    struct record *p, *q, *t;
+
+    t = (struct record *) malloc(sizeof(struct record));
+    if (t == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
+
+    t->no = no;
+    strcpy(t->name, name);
+    t->point = x;
+
+    q = NULL;
+    for (p = head; p != NULL; p = p->next) {
+        if (strcmp(p->name, name) > 0) {
+            break;
+        }
+        q = p;
+    }
+
+    if (q != NULL) {
+        q->next = t;
+    } else {
+        head = t;
+    }
+
+    t->next = p;
+}
+
+\end{verbatim}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./1 data.txt
+200711109 Akiyama 80
+200711118 Hayashi 66
+200711108 Kameda 44
+200711106 Kato 70
+200711119 Kawasaki 40
+200711114 Kimura 85
+200711103 Kojima 10
+200711107 Kudou 40
+200711110 Kuno 10
+200711115 Matumoto 70
+200711104 Miura 12
+200711120 Nagai 35
+200711113 Nakamura 95
+200711102 Ojima 30
+200711117 Saitou 95
+200711111 Sato 50
+200711112 Suda 65
+200711105 Suzuki 60
+200711101 Takahasi 60
+200711116 Yamada 33
+\end{verbatim}
+\end{shadebox}
+
+\section{}
+\subsection{ソース}
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct record {
+    int no;
+    char name[10];
+    int point;
+    struct record *next;
+};
+
+void insert_list(int no, char *name, int x);
+
+struct record *head = NULL;
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    int no, x;
+    char name[10], buf[256];
+    struct record *p;
+
+    if (argc != 2) {
+        printf("missing file argument\n");
+        return 1;
+    }
+
+    fp = fopen(argv[1], "r");
+    if (fp == NULL) {
+        printf("can't open %s\n", argv[1]);
+        return 1;
+    }
+
+    while (fgets(buf, sizeof(buf), fp) != NULL) {
+        sscanf(buf, "%d %s %d", &no, name, &x);
+        insert_list(no, name, x);
+    }
+
+    fclose(fp);
+
+    for (p = head; p != NULL; p = p->next) {
+        printf("%d %s %d\n", p->no, p->name, p->point);
+    }
+
+    return 0;
+}
+
+void insert_list(int no, char *name, int x)
+{
+    struct record *p, *q, *t;
+
+    t = (struct record *) malloc(sizeof(struct record));
+    if (t == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
+
+    t->no = no;
+    strcpy(t->name, name);
+    t->point = x;
+
+    q = NULL;
+    for (p = head; p != NULL; p = p->next) {
+        if (p->point < x) {
+            break;
+        }
+        q = p;
+    }
+
+    if (q != NULL) {
+        q->next = t;
+    } else {
+        head = t;
+    }
+
+    t->next = p;
+}
+\end{verbatim}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./2 data.txt
+200711113 Nakamura 95
+200711117 Saitou 95
+200711114 Kimura 85
+200711109 Akiyama 80
+200711106 Kato 70
+200711115 Matumoto 70
+200711118 Hayashi 66
+200711112 Suda 65
+200711101 Takahasi 60
+200711105 Suzuki 60
+200711111 Sato 50
+200711108 Kameda 44
+200711107 Kudou 40
+200711119 Kawasaki 40
+200711120 Nagai 35
+200711116 Yamada 33
+200711102 Ojima 30
+200711104 Miura 12
+200711103 Kojima 10
+200711110 Kuno 10
+\end{verbatim}
+\end{shadebox}
+
+\end{document}

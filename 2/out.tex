@@ -1,0 +1,191 @@
+\documentclass[11pt,a4paper,a4j]{jsarticle}
+\usepackage{okumacro, fancybox, ascmac}
+
+\title{プログラミング入門II 演習報告書}
+\author{吉村　優（201111411）\\
+mail:yoshimura\_yuu@coins.tsukuba.ac.jp}
+
+\begin{document}
+\maketitle
+
+\part*{演習2}
+\section{}
+\subsection{ソース}
+%\begin{shadebox}
+\begin{verbatim}
+#include <stdio.h>
+#define N 100
+
+int main() {
+    double a[N][N], b[N][N], kai[N], ans[N], tmp;
+    int i, j, k, n;
+
+    scanf("%d", &n);
+
+    for (j = 0; j < n; j++) {
+        for (i = 0; i < n; i++) {
+            a[j][i] = 0.0;
+            b[j][i] = 0.0;
+        }
+        kai[i] = 0.0;
+    }
+
+    for (i = 0; i < n; i++)
+        b[i][i] = 1.0;
+
+    for (j = 0; j < n; j++) {
+        for (i = 0; i < n; i++) {
+            scanf("%lf", &a[j][i]);
+        }
+        scanf("%lf", &kai[j]);
+    }
+
+    for (k = 0; k < n; k++) {
+        tmp = a[k][k];
+        for (i = 0; i < n; i++) {
+            a[k][i] /= tmp;
+            b[k][i] /= tmp;
+        }
+        for (j = 0; j < n; j++) {
+            if (j != k) {
+                tmp = a[j][k];
+                for (i = 0; i < n; i++) {
+                    a[j][i] -= a[k][i] * tmp;
+                    b[j][i] -= b[k][i] * tmp;
+                }
+            }
+        }
+    }
+
+    for (i=0; i<n; i++) {
+        tmp = 0.0;
+        for (j=0; j<n; j++) {
+            tmp += kai[j] * b[i][j];
+        }
+        printf("%lf\n", tmp);
+    }
+
+    return 0;
+}
+\end{verbatim}
+%\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./1 < input1.txt
+-2.090909
+1.333333
+3.212121
+-6.484848
+1.515152
+\end{verbatim}
+\end{shadebox}
+
+\clearpage
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{verbatim}
+#include <stdio.h>
+
+int main(void)
+{
+    char str1[256], str2[256];
+    int i, j, f;
+
+    puts("input string 1");
+    scanf("%s", str1);
+
+    puts("input string 2");
+    scanf("%s", str2);
+    
+    for (i=0; str1[i] != '\0'; i++) {
+        f = 1;
+        for (j=0; str2[j] != '\0'; j++) {
+            if (str1[i] == str2[j]) {
+                f = 0;
+                break;
+            }
+        }
+        if (f) {
+            printf("%c", str1[i]);
+        }
+    }
+
+    puts("");
+
+    return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./2
+input string 1
+information
+input string 2
+ifort
+nman
+\end{verbatim}
+\end{shadebox}
+\clearpage
+
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{verbatim}
+#include <stdio.h>
+
+int main(void)
+{
+    char str[256];
+    int i, f;
+    int len;
+
+    puts("input string");
+    scanf("%s", str);
+
+    len = printf("%s", str);
+    puts("");
+
+    f = 1;
+    for (i=0; i<len; i++) {
+        if (str[i] != str[len-i-1]) {
+            f = 0;
+        }
+    }
+
+    if (f) {
+        puts("kaibun");
+    } else {
+        puts("not kaibun");
+    }
+
+    return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./3
+input string
+detartrated
+detartrated
+kaibun
+
+[159] [~/tmp/pro2/2]
+yoshimura_yuu $ ./3
+input string
+tattarratat
+tattarratat
+not kaibun
+\end{verbatim}
+\end{shadebox}
+\clearpage
+
+\end{document}

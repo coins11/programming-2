@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper,a4j]{jsarticle}
+\usepackage{okumacro, fancybox, ascmac, listings, jlisting}
+\lstset{language={C}}
+
+
+\title{プログラミング入門II 演習報告書}
+\author{吉村　優（201111411）\\
+mail:yoshimura\_yuu@coins.tsukuba.ac.jp}
+
+\begin{document}
+\maketitle
+
+今回は作成した部分のみを抜粋した。
+
+\part*{演習六}
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{lstlisting}
+int search_tree(int x, struct node *p) {
+	struct node *current;
+	int boolean = 0;
+
+	current = p;
+	while (current != NULL) {
+		if (current->data == x) {
+			boolean = 1;
+			break;
+		}
+		else if (current->data < x) {
+			current = current->right;
+		}
+		else {
+			current = current->left;
+		}
+	}
+
+	return boolean;
+}
+\end{lstlisting}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./1 ./prog2-ex6-data.txt
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+1
+1: Found
+2
+2: Found
+100
+100: Not found
+-1
+\end{verbatim}
+\end{shadebox}
+
+\section{}
+\subsection{ソース}
+\begin{shadebox}
+\begin{lstlisting}
+int sumOfTree(struct node *p) {
+	if (p == NULL) {
+		return 0;
+	}
+	int sum = p->data;
+	sum += sumOfTree(p->right);
+	sum += sumOfTree(p->left);
+
+	return sum;
+}
+\end{lstlisting}
+\end{shadebox}
+
+\subsection{結果}
+\begin{shadebox}
+\begin{verbatim}
+yoshimura_yuu $ ./1 ./prog2-ex6-data.txt
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+171
+\end{verbatim}
+\end{shadebox}
+
+\end{document}
