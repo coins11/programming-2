@@ -1,4 +1,5 @@
 #include <stdio.h>
+#define MAX_ROUTELEN 1000
 #define EOS -1
 
 int n;
@@ -7,7 +8,7 @@ int stack[100];
 int *sp = &stack[0];
 
 int distance(int from, int to) {
-   int d, min = 1000;
+   int d, min = MAX_ROUTELEN;
    *(sp++) = from;
    if(from == to) {
       *sp = EOS;
