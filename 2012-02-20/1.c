@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -30,7 +29,8 @@ graph_t *read_graph(FILE *input)
     return graph;
 }
 
-int sp(graph_t *graph, int *used, size_t p1, size_t p2){
+int sp(graph_t *graph, int *used, size_t p1, size_t p2)
+{
     int min = -1;
     size_t i = 0;
     if(used[p1]) return -1;
