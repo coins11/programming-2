@@ -1,0 +1,16 @@
+
+CFLAGS = -g -Wall
+
+report.pdf : report.ps
+	ps2pdf report.ps
+
+Report(1 2, 7)
+
+Problem(1, 課題1, 1-1)
+Test(1, 1-1, $(EMPTY), $(EMPTY), $(EMPTY))
+
+Problem(2, 課題2, 2-1)
+Test(2, 2-1, $(EMPTY), $(EMPTY), $(EMPTY))
+
+.DEFAULT : report.pdf
+
