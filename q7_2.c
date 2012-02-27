@@ -1,31 +1,25 @@
 #include <stdio.h>
 #define MAX_ROUTELEN 1000
-#define EOS -1
+#define EOP -1
 
 int n;
 int route[100][100];
-int stack[100];
-int *sp = &stack[0];
+int path[100];
 
-int distance(int from, int to) {
-   int d, min = MAX_ROUTELEN;
-   *(sp++) = from;
-   if(from == to) {
-      *sp = EOS;
-      for(int i = 0; stack[i] != EOS; ++i) {
-         printf(stack[i] == to? "%d\n":"%d -> ", stack[i]);
-      }
-      return 0;
-   }
+int trace(int from, int to) {
+   if(from == to) return 0;
    for(int i = 0; i < n; ++i) {
       if(route[from][i] == 0) continue;
-      else {
-         d = route[from][i] + distance(i, to);
-         --sp;
+      path[from] = i;
+      trace(i, to);
+      if(i == n-1) {
+         for(int p = 0; p != EOP; p = path[p]) {
+            printf("%d-> ", p);
+         }
+         putchar('\n');
       }
-      if(d < min) min = d;
    }
-   return min;
+   return 0;
 }
 
 int main(int argc, char *argv[]) {
@@ -35,7 +29,8 @@ int main(int argc, char *argv[]) {
          scanf("%d", &route[i][j]);
       }
    }
-   distance(0, n-1);
+   path[n-1] = EOP;
+   trace(0, n-1);
    return 0;
 }
 
